@@ -21,6 +21,26 @@ async function main() {
   // Create test users
   const hashedPassword = await bcrypt.hash('Password123!', 10);
 
+  // Create admin user
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@creditjambo.com',
+      password: hashedPassword,
+      firstName: 'Admin',
+      lastName: 'User',
+      phoneNumber: '+1234567899',
+      dateOfBirth: new Date('1985-03-10'),
+      address: '999 Admin Plaza',
+      city: 'New York',
+      country: 'USA',
+      role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+      emailVerified: true,
+      phoneVerified: true,
+      kycVerified: true,
+    },
+  });
+
   const customer1 = await prisma.user.create({
     data: {
       email: 'john.doe@example.com',
@@ -227,7 +247,10 @@ async function main() {
   console.log(`   - Credits: ${await prisma.credit.count()}`);
   console.log(`   - Transactions: ${await prisma.transaction.count()}`);
   console.log(`   - Notifications: ${await prisma.notification.count()}`);
-  console.log('\n👤 Test Credentials:');
+  console.log('\n👤 Admin Credentials:');
+  console.log('   Email: admin@creditjambo.com');
+  console.log('   Password: Password123!');
+  console.log('\n👥 Customer Test Credentials:');
   console.log('   Email: john.doe@example.com');
   console.log('   Email: jane.smith@example.com');
   console.log('   Email: bob.wilson@example.com');
