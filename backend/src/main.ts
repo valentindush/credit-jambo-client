@@ -8,9 +8,12 @@ import { PrismaClientExceptionFilter } from './common/filters/prisma-exception.f
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS
+  // Enable CORS - parse comma-separated origins into an array
+  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000,http://localhost:3003';
+  const corsOrigins = corsOrigin.split(',').map(origin => origin.trim());
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000,http://localhost:3003',
+    origin: corsOrigins,
     credentials: true,
   });
 
