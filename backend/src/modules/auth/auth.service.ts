@@ -51,6 +51,10 @@ export class AuthService {
         address: registerDto.address,
         city: registerDto.city,
         country: registerDto.country,
+        status: 'ACTIVE',
+        emailVerified: true,
+        phoneVerified: true,
+        kycVerified: true,
       },
       select: {
         id: true,
