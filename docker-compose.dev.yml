@@ -38,6 +38,9 @@ services:
       CORS_ORIGIN: http://localhost:3000,http://localhost:3003
       THROTTLE_TTL: 60
       THROTTLE_LIMIT: 10
+      SEED_ADMIN_EMAIL: admin@creditjambo.com
+      SEED_ADMIN_PASSWORD: Password123!
+      SEED_CUSTOMER_PASSWORD: Password123!
     ports:
       - "3001:3001"
     volumes:

@@ -3,6 +3,11 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+// Get credentials from environment variables
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@creditjambo.com';
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'Password123!';
+const CUSTOMER_PASSWORD = process.env.SEED_CUSTOMER_PASSWORD || 'Password123!';
+
 async function main() {
   console.log('🌱 Starting database seeding...');
 
@@ -19,13 +24,14 @@ async function main() {
   console.log('✅ Cleaned existing data');
 
   // Create test users
-  const hashedPassword = await bcrypt.hash('Password123!', 10);
+  const adminHashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+  const customerHashedPassword = await bcrypt.hash(CUSTOMER_PASSWORD, 10);
 
   // Create admin user
   const admin = await prisma.user.create({
     data: {
-      email: 'admin@creditjambo.com',
-      password: hashedPassword,
+      email: ADMIN_EMAIL,
+      password: adminHashedPassword,
       firstName: 'Admin',
       lastName: 'User',
       phoneNumber: '+1234567899',
@@ -44,7 +50,7 @@ async function main() {
   const customer1 = await prisma.user.create({
     data: {
       email: 'john.doe@example.com',
-      password: hashedPassword,
+      password: customerHashedPassword,
       firstName: 'John',
       lastName: 'Doe',
       phoneNumber: '+1234567890',
@@ -63,7 +69,7 @@ async function main() {
   const customer2 = await prisma.user.create({
     data: {
       email: 'jane.smith@example.com',
-      password: hashedPassword,
+      password: customerHashedPassword,
       firstName: 'Jane',
       lastName: 'Smith',
       phoneNumber: '+1234567891',
@@ -82,7 +88,7 @@ async function main() {
   const customer3 = await prisma.user.create({
     data: {
       email: 'bob.wilson@example.com',
-      password: hashedPassword,
+      password: customerHashedPassword,
       firstName: 'Bob',
       lastName: 'Wilson',
       phoneNumber: '+1234567892',
@@ -248,13 +254,13 @@ async function main() {
   console.log(`   - Transactions: ${await prisma.transaction.count()}`);
   console.log(`   - Notifications: ${await prisma.notification.count()}`);
   console.log('\n👤 Admin Credentials:');
-  console.log('   Email: admin@creditjambo.com');
-  console.log('   Password: Password123!');
+  console.log(`   Email: ${ADMIN_EMAIL}`);
+  console.log(`   Password: ${ADMIN_PASSWORD}`);
   console.log('\n👥 Customer Test Credentials:');
   console.log('   Email: john.doe@example.com');
   console.log('   Email: jane.smith@example.com');
   console.log('   Email: bob.wilson@example.com');
-  console.log('   Password: Password123!');
+  console.log(`   Password: ${CUSTOMER_PASSWORD}`);
 }
 
 main()
