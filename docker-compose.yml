@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: creditjambo_client
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -46,6 +46,7 @@ services:
     networks:
       - creditjambo-network
     restart: unless-stopped
+    command: sh -c "pnpm prisma:migrate && pnpm seed && node dist/src/main.js"
 
   # Client Frontend
   frontend:
